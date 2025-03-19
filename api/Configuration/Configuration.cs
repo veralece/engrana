@@ -1,4 +1,6 @@
+using Engrana.Infrastructure;
 using Engrana.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Configuration
 {
@@ -9,11 +11,19 @@ namespace Engrana.Configuration
             builder.Services.AddScoped<AssetService>();
         }
 
-        public static string? RegisterConnectionStrings(WebApplicationBuilder builder)
+        public static void RegisterConnectionStrings(WebApplicationBuilder builder)
         {
-            return builder.Environment.IsDevelopment()
-                ? builder.Configuration["ConnStrDev"]
-                : default;
+            string? connectionString = null;
+
+            if (builder.Environment.IsDevelopment())
+            {
+                connectionString = builder.Configuration["ConnStrDev"];
+            }
+
+            builder.Services.AddDbContext<EngranaContext>(options =>
+            {
+                options.UseSqlServer(connectionString, builder => builder.EnableRetryOnFailure());
+            });
         }
     }
 }
