@@ -1,7 +1,9 @@
+using Engrana.Domain.Configuration;
+
 namespace Engrana.Domain;
 
 //TODO apply formatting constraints?
-public class PhysicalAddress : EntityBase
+public class PhysicalAddress : ConfigurableEntity
 {
     public required string Name { get; set; }
     public string? Address { get; set; }

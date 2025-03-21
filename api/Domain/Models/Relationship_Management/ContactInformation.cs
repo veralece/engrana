@@ -1,6 +1,8 @@
+using Engrana.Domain.Configuration;
+
 namespace Engrana.Domain;
 
-public class ContactInformation : EntityBase
+public class ContactInformation : ConfigurableEntity
 {
     public required string Name { get; set; }
     public string? Email { get; set; }

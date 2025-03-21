@@ -1,6 +1,8 @@
+using Engrana.Domain.Configuration;
+
 namespace Engrana.Domain;
 
-public class Incident : EntityBase
+public class Incident : ConfigurableEntity
 {
     public required string Title { get; set; }
     public string? Description { get; set; }

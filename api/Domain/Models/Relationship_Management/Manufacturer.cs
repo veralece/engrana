@@ -1,8 +1,10 @@
+using Engrana.Domain.Configuration;
+
 namespace Engrana.Domain;
 
 //todo add other data points relevant to manufacturers
 //licenses, contracts, policies...
-public class Manufacturer : EntityBase
+public class Manufacturer : ConfigurableEntity
 {
     public required string Name { get; set; }
     public IList<string>? Urls { get; set; } = [];

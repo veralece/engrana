@@ -2,7 +2,7 @@ using Engrana.Domain.Configuration;
 
 namespace Engrana.Domain;
 
-public class ConfigurationItem : EntityBase
+public class ConfigurationItem : ConfigurableEntity
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
