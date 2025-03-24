@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Service;
 
+//todo consider other generic operations
 /// <summary>
 /// Generic service that performs basic CRUD operations
 /// </summary>
@@ -13,22 +14,26 @@ public abstract class ServiceBase<T>(EngranaContext context)
     where T : EntityBase
 {
     protected readonly EngranaContext _context = context;
-    private readonly DbSet<T> _dbSet = context.Set<T>();
+    protected readonly DbSet<T> _dbSet = context.Set<T>();
 
-    public async Task AddAsync(T entity)
+    public async Task<T?> AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        var entry = await _dbSet.AddAsync(entity);
+        int result = await _context.SaveChangesAsync();
+        if (result > 0)
+            return entry.Entity;
+        return default;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task<int> DeleteAsync(Guid id)
     {
         var entity = await _dbSet.FindAsync(id);
         if (entity != null)
         {
             _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
+        return 0;
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
@@ -41,10 +46,10 @@ public abstract class ServiceBase<T>(EngranaContext context)
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task<int> UpdateAsync(T entity)
     {
         _dbSet.Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 }
