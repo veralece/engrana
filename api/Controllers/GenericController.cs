@@ -95,7 +95,7 @@ public abstract class GenericController<T>(ServiceBase<T> service) : ControllerB
             if (result > 0)
             {
                 return StatusCode(
-                    StatusCodes.Status202Accepted,
+                    StatusCodes.Status204NoContent,
                     new ApiResult<T>() { Successful = true }
                 );
             }
@@ -131,7 +131,7 @@ public abstract class GenericController<T>(ServiceBase<T> service) : ControllerB
             if (result != null)
             {
                 return StatusCode(
-                    StatusCodes.Status200OK,
+                    StatusCodes.Status201Created,
                     new ApiResult<T>(result) { Successful = true }
                 );
             }

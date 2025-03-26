@@ -6,7 +6,6 @@ namespace Engrana.Domain;
 //licenses, contracts, policies...
 public class Manufacturer : ConfigurableEntity
 {
-    public required string Name { get; set; }
     public IList<string>? Urls { get; set; } = [];
     #region Entity Framework Navigation Properties
     public IList<PhysicalAddress>? Addresses { get; set; } = [];

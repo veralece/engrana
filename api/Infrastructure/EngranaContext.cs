@@ -7,8 +7,11 @@ public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContex
 {
     public DbSet<Asset> Asset { get; set; }
     public DbSet<ConfigurationItem> ConfigurationItem { get; set; }
-
-    // public DbSet<Manufacturer> Manufacturer { get; set; }
+    public DbSet<ContactInformation> ContactInformation { get; set; }
+    public DbSet<Incident> Incident { get; set; }
+    public DbSet<Manufacturer> Manufacturer { get; set; }
+    public DbSet<Organization> Organization { get; set; }
+    public DbSet<PhysicalAddress> PhysicalAddress { get; set; }
 
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {

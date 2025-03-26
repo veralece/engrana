@@ -9,6 +9,7 @@ namespace Engrana.Configuration
         public static void RegisterServices(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<AssetService>();
+            builder.Services.AddScoped<ConfigurationItemService>();
         }
 
         public static void RegisterConnectionStrings(WebApplicationBuilder builder)
