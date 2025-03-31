@@ -3,5 +3,15 @@ namespace Engrana.Domain.Configuration;
 public enum EntityType
 {
     Asset,
-    ConfigurationItem
+    Change,
+    ConfigurationItem,
+    ContactInformation,
+    Incident,
+    KnowledgeArticle,
+    Manufacturer,
+    Organization,
+    PhysicalAddress,
+    Problem,
+    Project,
+    ServiceRequest
 }
