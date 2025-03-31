@@ -52,4 +52,8 @@ public abstract class ServiceBase<T>(EngranaContext context)
         _context.Entry(entity).State = EntityState.Modified;
         return await _context.SaveChangesAsync();
     }
+
+    //todo develop the trigger to queue a workflow with the entity
+    //pull all triggers for the affected entity type and run the trigger conditions.
+    // public async Task CheckTrigger(T Entity) { }
 }
