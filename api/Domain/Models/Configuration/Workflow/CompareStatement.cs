@@ -11,8 +11,8 @@ public class CompareStatement : EntityBase
     public IList<DatePropertyState> DatePropertyStates { get; init; } = [];
     public IList<BooleanPropertyState> BooleanPropertyStates { get; init; } = [];
     public IList<NumberPropertyState> NumberPropertyStates { get; init; } = [];
-    public IList<EntityPropertyState> EntityPropertyStates { get; init; } = [];
 
+    // public IList<EntityPropertyState> EntityPropertyStates { get; init; } = [];
     // public IList<NumberArrayPropertyState> IntegerArrayPropertiesToCompare { get; init; } = [];
     // public IList<DateArrayPropertyState> DateArrayPropertiesToCompare { get; init; } = [];
     // public IList<StringArrayPropertyState> StringArrayPropertiesToCompare { get; init; } = [];
@@ -28,8 +28,8 @@ public class CompareStatement : EntityBase
             StringPropertyStates.Count
             + DatePropertyStates.Count
             + BooleanPropertyStates.Count
-            + NumberPropertyStates.Count
-            + EntityPropertyStates.Count;
+            + NumberPropertyStates.Count;
+        // + EntityPropertyStates.Count;
         // + IntegerArrayPropertiesToCompare.Count
         // + StringArrayPropertiesToCompare.Count
         // + DateArrayPropertiesToCompare.Count;
@@ -103,21 +103,21 @@ public class CompareStatement : EntityBase
             }
         }
 
-        if (EntityPropertyStates.Any())
-        {
-            foreach (var condition in EntityPropertyStates)
-            {
-                _satisfied = condition.Compare(entity, entityProperties);
-                if (_satisfied)
-                {
-                    SatisfiedConditions.Add(condition);
-                }
-                else
-                {
-                    UnsatisfiedConditions.Add(condition);
-                }
-            }
-        }
+        // if (EntityPropertyStates.Any())
+        // {
+        //     foreach (var condition in EntityPropertyStates)
+        //     {
+        //         _satisfied = condition.Compare(entity, entityProperties);
+        //         if (_satisfied)
+        //         {
+        //             SatisfiedConditions.Add(condition);
+        //         }
+        //         else
+        //         {
+        //             UnsatisfiedConditions.Add(condition);
+        //         }
+        //     }
+        // }
 
         //todo old code to clean up, but leaving for historical purposes for now
         // foreach (var property in PropertiesToCompare)
