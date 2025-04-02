@@ -4,15 +4,15 @@ namespace Engrana.Domain.Configuration;
 
 public class Trigger : EntityBase
 {
-    public EntityType TriggerEntity { get; set; }
+    public EntityType TriggerEntity { get; init; }
+    public TriggerType TriggerType { get; init; }
     public IList<CompareStatement> CompareStatements { get; init; } = [];
     public Guid WorkflowId { get; init; }
     public string? Message { get; init; }
     public bool ShowMessage { get; init; }
     private bool _shouldTriggerWorkflow = true;
 
-    public void CheckTrigger<T>(T entity)
-        where T : EntityBase
+    public void CheckTrigger(EntityBase entity)
     {
         if (entity is not null)
         {
