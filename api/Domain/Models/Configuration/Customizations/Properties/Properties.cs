@@ -2,6 +2,7 @@ namespace Engrana.Domain.Configuration;
 
 public abstract class PropertyBase : EntityBase
 {
+    public string? FieldLabel { get; set; }
     public FieldType FieldType { get; set; } = FieldType.Input;
     public bool Required { get; set; }
     public string? HintMessage { get; set; }
