@@ -2,9 +2,9 @@ using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
 
-public class BooleanPropertyState : PropertyState, IValueType<bool>
+public class BooleanPropertyState : PropertyState<bool>
 {
-    public required bool Value { get; set; }
+    public override required bool Value { get; set; }
 
     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
     {
@@ -26,7 +26,7 @@ public class BooleanPropertyState : PropertyState, IValueType<bool>
         return entityValue is not null && (bool)entityValue == Value;
     }
 
-    public override void TransferState(EntityBase entity, PropertyInfo[] entityProperties)
+    public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityProperty = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -37,6 +37,7 @@ public class BooleanPropertyState : PropertyState, IValueType<bool>
             if (entityProperty is not null && entityProperty is BooleanEntry booleanEntry)
             {
                 booleanEntry.Value = Value;
+                return true;
             }
         }
         else
@@ -45,13 +46,10 @@ public class BooleanPropertyState : PropertyState, IValueType<bool>
             if (entityProperty is not null && entityProperty is PropertyInfo propertyInfo)
             {
                 propertyInfo.SetValue(entity, Value);
+                return true;
             }
         }
 
-        // if (entityProperty is not null && (bool)entityProperty == Value)
-        // {
-        //     return true;
-        // }
-        // return false;
+        return false;
     }
 }

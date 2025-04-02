@@ -2,12 +2,19 @@ using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
 
-public abstract class PropertyState : EntityBase
+public interface IPropertyState
+{
+    bool IsCustomProperty { get; set; }
+    string PropertyName { get; set; }
+}
+
+public abstract class PropertyState<T> : EntityBase, IPropertyState
 {
     public bool IsCustomProperty { get; set; } = false;
     public required string PropertyName { get; set; }
+    public virtual required T Value { get; set; }
     public abstract bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
-    public abstract void TransferState(EntityBase entity, PropertyInfo[] entityProperties);
+    public abstract bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }
 
 //todo determine how to transfer entity states

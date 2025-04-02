@@ -2,9 +2,9 @@ using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
 
-public class NumberPropertyState : PropertyState, IValueType<int>
+public class NumberPropertyState : PropertyState<int>
 {
-    public required int Value { get; set; }
+    public override required int Value { get; set; }
 
     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
     {
@@ -26,7 +26,7 @@ public class NumberPropertyState : PropertyState, IValueType<int>
         return entityValue is not null && (int)entityValue == Value;
     }
 
-    public override void TransferState(EntityBase entity, PropertyInfo[] entityProperties)
+    public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityProperty = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -37,6 +37,7 @@ public class NumberPropertyState : PropertyState, IValueType<int>
             if (entityProperty is not null && entityProperty is NumberEntry numberEntry)
             {
                 numberEntry.Value = Value;
+                return true;
             }
         }
         else
@@ -45,13 +46,10 @@ public class NumberPropertyState : PropertyState, IValueType<int>
             if (entityProperty is not null && entityProperty is PropertyInfo propertyInfo)
             {
                 propertyInfo.SetValue(entity, Value);
+                return true;
             }
         }
 
-        // if (entityProperty is not null && (int)entityProperty == Value)
-        // {
-        //     return true;
-        // }
-        // return false;
+        return false;
     }
 }

@@ -7,29 +7,29 @@ public class CompareStatement : EntityBase
 {
     [NotMapped]
     public bool IsSatisfied { get; private set; } = false;
-    public IList<StringPropertyState> StringPropertyStates { get; init; } = [];
-    public IList<DatePropertyState> DatePropertyStates { get; init; } = [];
-    public IList<BooleanPropertyState> BooleanPropertyStates { get; init; } = [];
-    public IList<NumberPropertyState> NumberPropertyStates { get; init; } = [];
+    public IList<StringPropertyState> StringPropertyConditions { get; init; } = [];
+    public IList<DatePropertyState> DatePropertyConditions { get; init; } = [];
+    public IList<BooleanPropertyState> BooleanPropertyConditions { get; init; } = [];
+    public IList<NumberPropertyState> NumberPropertyConditions { get; init; } = [];
 
-    // public IList<EntityPropertyState> EntityPropertyStates { get; init; } = [];
+    // public IList<EntityPropertyState> EntityPropertyConditions { get; init; } = [];
     // public IList<NumberArrayPropertyState> IntegerArrayPropertiesToCompare { get; init; } = [];
     // public IList<DateArrayPropertyState> DateArrayPropertiesToCompare { get; init; } = [];
     // public IList<StringArrayPropertyState> StringArrayPropertiesToCompare { get; init; } = [];
 
     [NotMapped]
-    public IList<PropertyState> SatisfiedConditions { get; set; } = [];
+    public IList<IPropertyState> SatisfiedConditions { get; set; } = [];
 
     [NotMapped]
-    public IList<PropertyState> UnsatisfiedConditions { get; set; } = [];
+    public IList<IPropertyState> UnsatisfiedConditions { get; set; } = [];
     private int ConditionCount
     {
         get =>
-            StringPropertyStates.Count
-            + DatePropertyStates.Count
-            + BooleanPropertyStates.Count
-            + NumberPropertyStates.Count;
-        // + EntityPropertyStates.Count;
+            StringPropertyConditions.Count
+            + DatePropertyConditions.Count
+            + BooleanPropertyConditions.Count
+            + NumberPropertyConditions.Count;
+        // + EntityPropertyConditions.Count;
         // + IntegerArrayPropertiesToCompare.Count
         // + StringArrayPropertiesToCompare.Count
         // + DateArrayPropertiesToCompare.Count;
@@ -39,9 +39,9 @@ public class CompareStatement : EntityBase
     public void Evaluate(EntityBase entity, PropertyInfo[] entityProperties)
     {
         bool _satisfied;
-        if (BooleanPropertyStates.Any())
+        if (BooleanPropertyConditions.Any())
         {
-            foreach (var condition in BooleanPropertyStates)
+            foreach (var condition in BooleanPropertyConditions)
             {
                 _satisfied = condition.Compare(entity, entityProperties);
                 if (_satisfied)
@@ -55,9 +55,9 @@ public class CompareStatement : EntityBase
             }
         }
 
-        if (NumberPropertyStates.Any())
+        if (NumberPropertyConditions.Any())
         {
-            foreach (var condition in NumberPropertyStates)
+            foreach (var condition in NumberPropertyConditions)
             {
                 _satisfied = condition.Compare(entity, entityProperties);
                 if (_satisfied)
@@ -71,9 +71,9 @@ public class CompareStatement : EntityBase
             }
         }
 
-        if (DatePropertyStates.Any())
+        if (DatePropertyConditions.Any())
         {
-            foreach (var condition in DatePropertyStates)
+            foreach (var condition in DatePropertyConditions)
             {
                 _satisfied = condition.Compare(entity, entityProperties);
                 if (_satisfied)
@@ -87,9 +87,9 @@ public class CompareStatement : EntityBase
             }
         }
 
-        if (StringPropertyStates.Any())
+        if (StringPropertyConditions.Any())
         {
-            foreach (var condition in StringPropertyStates)
+            foreach (var condition in StringPropertyConditions)
             {
                 _satisfied = condition.Compare(entity, entityProperties);
                 if (_satisfied)
@@ -103,9 +103,9 @@ public class CompareStatement : EntityBase
             }
         }
 
-        // if (EntityPropertyStates.Any())
+        // if (EntityPropertyConditions.Any())
         // {
-        //     foreach (var condition in EntityPropertyStates)
+        //     foreach (var condition in EntityPropertyConditions)
         //     {
         //         _satisfied = condition.Compare(entity, entityProperties);
         //         if (_satisfied)

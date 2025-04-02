@@ -7,7 +7,6 @@ public class WorkflowStep : EntityBase
     public IList<BooleanPropertyState> BooleanPropertyToUpdate { get; set; } = [];
     public IList<DatePropertyState> DatePropertyToUpdate { get; set; } = [];
     public IList<NumberPropertyState> NumberPropertyToUpdate { get; set; } = [];
-
     public required CompareStatement CompareStatement { get; set; }
 
     public void Step(EntityBase entity)

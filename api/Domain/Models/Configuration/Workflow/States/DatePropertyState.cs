@@ -2,9 +2,9 @@ using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
 
-public class DatePropertyState : PropertyState, IValueType<DateTime>
+public class DatePropertyState : PropertyState<DateTime>
 {
-    public required DateTime Value { get; set; }
+    public override required DateTime Value { get; set; }
 
     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
     {
@@ -26,7 +26,7 @@ public class DatePropertyState : PropertyState, IValueType<DateTime>
         return entityValue is not null && (DateTime)entityValue == Value;
     }
 
-    public override void TransferState(EntityBase entity, PropertyInfo[] entityProperties)
+    public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityProperty = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -37,6 +37,7 @@ public class DatePropertyState : PropertyState, IValueType<DateTime>
             if (entityProperty is not null && entityProperty is DateEntry dateEntry)
             {
                 dateEntry.Value = Value;
+                return true;
             }
         }
         else
@@ -45,13 +46,10 @@ public class DatePropertyState : PropertyState, IValueType<DateTime>
             if (entityProperty is not null && entityProperty is PropertyInfo propertyInfo)
             {
                 propertyInfo.SetValue(entity, Value);
+                return true;
             }
         }
 
-        // if (entityProperty is not null && (DateTime)entityProperty == Value)
-        // {
-        //     return true;
-        // }
-        // return false;
+        return false;
     }
 }
