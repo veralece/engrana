@@ -1,3 +1,4 @@
+using Engrana.Domain;
 using Engrana.Infrastructure;
 using Engrana.Service;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,18 @@ namespace Engrana.Configuration
     {
         public static void RegisterServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<AssetService>();
-            builder.Services.AddScoped<ConfigurationItemService>();
+            builder.Services.AddHostedService<QueueService>();
+            builder.Services.AddSingleton<IBackgroundTaskQueue>(_ => new BackgroundTaskQueue(100));
+            builder.Services.AddScoped<IService<Asset>, AssetService>();
+            builder.Services.AddScoped<IService<ConfigurationItem>, ConfigurationItemService>();
+            builder.Services.AddScoped<IService<Change>, ChangeService>();
+            builder.Services.AddScoped<IService<ContactInformation>, ContactInformationService>();
+            builder.Services.AddScoped<IService<Incident>, IncidentService>();
+            builder.Services.AddScoped<IService<KnowledgeArticle>, KnowledgeService>();
+            builder.Services.AddScoped<IService<Manufacturer>, ManufacturerService>();
+            builder.Services.AddScoped<IService<Organization>, OrganizationService>();
+            builder.Services.AddScoped<IService<PhysicalAddress>, PhysicalAddressService>();
+            builder.Services.AddScoped<IService<ServiceRequest>, ServiceRequestService>();
         }
 
         public static void RegisterConnectionStrings(WebApplicationBuilder builder)
@@ -21,7 +32,7 @@ namespace Engrana.Configuration
                 connectionString = builder.Configuration["ConnStrDev"];
             }
 
-            builder.Services.AddDbContext<EngranaContext>(options =>
+            builder.Services.AddDbContextFactory<EngranaContext>(options =>
             {
                 options.UseSqlServer(connectionString, builder => builder.EnableRetryOnFailure());
             });
