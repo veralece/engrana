@@ -6,16 +6,23 @@ public interface IPropertyState
 {
     bool IsCustomProperty { get; set; }
     string PropertyName { get; set; }
+    bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
+    bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }
 
-public abstract class PropertyState<T> : EntityBase, IPropertyState
+public abstract class PropertyStateBase : EntityBase, IPropertyState
 {
     public bool IsCustomProperty { get; set; } = false;
     public required string PropertyName { get; set; }
-    public virtual required T Value { get; set; }
     public abstract bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
     public abstract bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }
+
+public abstract class PropertyState<T> : PropertyStateBase
+{
+    public required T Value { get; set; }
+}
+
 
 //todo determine how to transfer entity states
 //? Comparison of entity state is already done.

@@ -4,8 +4,6 @@ namespace Engrana.Domain.Configuration;
 
 public class DatePropertyState : PropertyState<DateTime>
 {
-    public override required DateTime Value { get; set; }
-
     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;

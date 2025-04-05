@@ -2,17 +2,15 @@ using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
 
-public class NumberPropertyState : PropertyState<int>
+public class StringPropertyState : PropertyState<string>
 {
-    public override required int Value { get; set; }
-
     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
         {
             entityValue = configurableEntity
-                .AdditionalNumberProperties.FirstOrDefault(p => p.Name == PropertyName)
+                .AdditionalStringProperties.FirstOrDefault(p => p.Name == PropertyName)
                 ?.Entries.First()
                 .Value;
         }
@@ -23,7 +21,7 @@ public class NumberPropertyState : PropertyState<int>
                 ?.GetValue(entity);
         }
 
-        return entityValue is not null && (int)entityValue == Value;
+        return entityValue is not null && (string)entityValue == Value;
     }
 
     public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
@@ -34,9 +32,9 @@ public class NumberPropertyState : PropertyState<int>
             entityProperty = configurableEntity
                 .AdditionalStringProperties.FirstOrDefault(p => p.Name == PropertyName)
                 ?.Entries.First();
-            if (entityProperty is not null && entityProperty is NumberEntry numberEntry)
+            if (entityProperty is not null && entityProperty is StringEntry stringEntry)
             {
-                numberEntry.Value = Value;
+                stringEntry.Value = Value;
                 return true;
             }
         }
