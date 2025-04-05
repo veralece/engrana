@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
 namespace Engrana.Domain.Configuration;
@@ -17,6 +18,8 @@ public class WorkflowStep : EntityBase
             .. DatePropertyToUpdate,
             .. NumberPropertyToUpdate
         ];
+
+    [NotMapped]
     public IList<IPropertyState> FailedProperties { get; set; } = [];
 
     public bool Step(EntityBase entity, PropertyInfo[] entityProperties)
