@@ -1,7 +1,9 @@
 using Engrana.Domain;
 using Engrana.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Service;
 
 //todo determine which non-CRUD functions to create
-public class IncidentService(EngranaContext context) : ServiceBase<Incident>(context) { }
+public class IncidentService(IDbContextFactory<EngranaContext> contextFactory)
+    : ServiceBase<Incident>(contextFactory) { }
