@@ -5,5 +5,9 @@ public enum TriggerType
     OnAdded,
     OnChanged,
     OnDeleted,
-    OnRead
+    OnRead,
+    OnAutomationAdded,
+    OnAutomationChanged,
+    OnAutomationDeleted,
+    OnAutomationRead,
 }
