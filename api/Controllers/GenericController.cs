@@ -1,4 +1,5 @@
 using Engrana.Domain;
+using Engrana.Domain.Configuration;
 using Engrana.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,12 @@ namespace Engrana.Controllers;
 /// <param name="service"></param>
 [ApiController]
 [Route("v1/[controller]")]
-public abstract class GenericController<T>(ServiceBase<T> service) : ControllerBase
+public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTaskQueue taskQueue)
+    : ControllerBase
     where T : EntityBase
 {
     private readonly ServiceBase<T> _service = service;
+    private readonly IBackgroundTaskQueue _taskQueue = taskQueue;
 
     [HttpGet]
     public async Task<ActionResult<ApiResult<IEnumerable<T>>>> GetAll()
@@ -130,6 +133,15 @@ public abstract class GenericController<T>(ServiceBase<T> service) : ControllerB
 
             if (result != null)
             {
+                //todo find out how to enqueue this to a background queue so that the http request can return.
+                await _taskQueue.QueueBackgroundWorkItemAsync(
+                    async (serviceProvider, token) =>
+                    {
+                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        await scopedService.CheckTrigger(entity, TriggerType.OnAdded);
+                    }
+                );
+
                 return StatusCode(
                     StatusCodes.Status201Created,
                     new ApiResult<T>(result) { Successful = true }
