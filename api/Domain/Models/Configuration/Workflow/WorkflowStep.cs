@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace Engrana.Domain.Configuration;
 
 public class WorkflowStep : EntityBase
@@ -8,41 +10,30 @@ public class WorkflowStep : EntityBase
     public IList<DatePropertyState> DatePropertyToUpdate { get; set; } = [];
     public IList<NumberPropertyState> NumberPropertyToUpdate { get; set; } = [];
     public required CompareStatement CompareStatement { get; set; }
+    private IList<PropertyStateBase> PropertiesToEvaulate =>
+        [
+            .. BooleanPropertyToUpdate,
+            .. StringPropertyToUpdate,
+            .. DatePropertyToUpdate,
+            .. NumberPropertyToUpdate
+        ];
+    public IList<IPropertyState> FailedProperties { get; set; } = [];
 
-    public void Step(EntityBase entity)
+    public bool Step(EntityBase entity, PropertyInfo[] entityProperties)
     {
-        var entityProperties = entity.GetType().GetProperties();
         CompareStatement.Evaluate(entity, entityProperties);
         if (CompareStatement.IsSatisfied)
         {
-            if (StringPropertyToUpdate.Any())
+            foreach (var property in PropertiesToEvaulate)
             {
-                foreach (var property in StringPropertyToUpdate)
-                {
-                    property.TransferState(entity, entityProperties);
-                }
+                if (property.TransferState(entity, entityProperties) is false)
+                    FailedProperties.Add(property);
             }
-            if (BooleanPropertyToUpdate.Any())
+            if (!FailedProperties.Any())
             {
-                foreach (var property in BooleanPropertyToUpdate)
-                {
-                    property.TransferState(entity, entityProperties);
-                }
-            }
-            if (DatePropertyToUpdate.Any())
-            {
-                foreach (var property in DatePropertyToUpdate)
-                {
-                    property.TransferState(entity, entityProperties);
-                }
-            }
-            if (NumberPropertyToUpdate.Any())
-            {
-                foreach (var property in NumberPropertyToUpdate)
-                {
-                    property.TransferState(entity, entityProperties);
-                }
+                return true;
             }
         }
+        return false;
     }
 }

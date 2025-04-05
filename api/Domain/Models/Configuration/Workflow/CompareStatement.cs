@@ -17,6 +17,19 @@ public class CompareStatement : EntityBase
     // public IList<DateArrayPropertyState> DateArrayPropertiesToCompare { get; init; } = [];
     // public IList<StringArrayPropertyState> StringArrayPropertiesToCompare { get; init; } = [];
 
+    //todo test this functionality
+    [NotMapped]
+    public IList<IPropertyState> PropertyConditions
+    {
+        get =>
+            [
+                .. StringPropertyConditions,
+                .. DatePropertyConditions,
+                .. BooleanPropertyConditions,
+                .. NumberPropertyConditions
+            ];
+    }
+
     [NotMapped]
     public IList<IPropertyState> SatisfiedConditions { get; set; } = [];
 
@@ -36,14 +49,14 @@ public class CompareStatement : EntityBase
     }
 
     //todo maybe add operators such as EqualTo, Contains, GreaterThan, LessThan, etc
-    public void Evaluate(EntityBase entity, PropertyInfo[] entityProperties)
+    public void Evaluate(EntityBase entity, PropertyInfo[] entityPropertyInfo)
     {
         bool _satisfied;
-        if (BooleanPropertyConditions.Any())
+        if (PropertyConditions.Count > 0)
         {
-            foreach (var condition in BooleanPropertyConditions)
+            foreach (var condition in PropertyConditions)
             {
-                _satisfied = condition.Compare(entity, entityProperties);
+                _satisfied = condition.Compare(entity, entityPropertyInfo);
                 if (_satisfied)
                 {
                     SatisfiedConditions.Add(condition);
@@ -54,54 +67,70 @@ public class CompareStatement : EntityBase
                 }
             }
         }
+        //todo test new code and delete this if it works fine
+        // if (BooleanPropertyConditions.Any())
+        // {
+        //     foreach (var condition in BooleanPropertyConditions)
+        //     {
+        //         _satisfied = condition.Compare(entity, entityProperties);
+        //         if (_satisfied)
+        //         {
+        //             SatisfiedConditions.Add(condition);
+        //         }
+        //         else
+        //         {
+        //             UnsatisfiedConditions.Add(condition);
+        //         }
+        //     }
+        // }
 
-        if (NumberPropertyConditions.Any())
-        {
-            foreach (var condition in NumberPropertyConditions)
-            {
-                _satisfied = condition.Compare(entity, entityProperties);
-                if (_satisfied)
-                {
-                    SatisfiedConditions.Add(condition);
-                }
-                else
-                {
-                    UnsatisfiedConditions.Add(condition);
-                }
-            }
-        }
+        // if (NumberPropertyConditions.Any())
+        // {
+        //     foreach (var condition in NumberPropertyConditions)
+        //     {
+        //         _satisfied = condition.Compare(entity, entityProperties);
+        //         if (_satisfied)
+        //         {
+        //             SatisfiedConditions.Add(condition);
+        //         }
+        //         else
+        //         {
+        //             UnsatisfiedConditions.Add(condition);
+        //         }
+        //     }
+        // }
 
-        if (DatePropertyConditions.Any())
-        {
-            foreach (var condition in DatePropertyConditions)
-            {
-                _satisfied = condition.Compare(entity, entityProperties);
-                if (_satisfied)
-                {
-                    SatisfiedConditions.Add(condition);
-                }
-                else
-                {
-                    UnsatisfiedConditions.Add(condition);
-                }
-            }
-        }
+        // if (DatePropertyConditions.Any())
+        // {
+        //     foreach (var condition in DatePropertyConditions)
+        //     {
+        //         _satisfied = condition.Compare(entity, entityProperties);
+        //         if (_satisfied)
+        //         {
+        //             SatisfiedConditions.Add(condition);
+        //         }
+        //         else
+        //         {
+        //             UnsatisfiedConditions.Add(condition);
+        //         }
+        //     }
+        // }
 
-        if (StringPropertyConditions.Any())
-        {
-            foreach (var condition in StringPropertyConditions)
-            {
-                _satisfied = condition.Compare(entity, entityProperties);
-                if (_satisfied)
-                {
-                    SatisfiedConditions.Add(condition);
-                }
-                else
-                {
-                    UnsatisfiedConditions.Add(condition);
-                }
-            }
-        }
+        // if (StringPropertyConditions.Any())
+        // {
+        //     foreach (var condition in StringPropertyConditions)
+        //     {
+        //         _satisfied = condition.Compare(entity, entityProperties);
+        //         if (_satisfied)
+        //         {
+        //             SatisfiedConditions.Add(condition);
+        //         }
+        //         else
+        //         {
+        //             UnsatisfiedConditions.Add(condition);
+        //         }
+        //     }
+        // }
 
         // if (EntityPropertyConditions.Any())
         // {
@@ -119,56 +148,8 @@ public class CompareStatement : EntityBase
         //     }
         // }
 
-        //todo old code to clean up, but leaving for historical purposes for now
-        // foreach (var property in PropertiesToCompare)
-        // {
-        //     object? entityValue = null;
-        //     if (property.IsCustomProperty && entity is ConfigurableEntity configurableEntity)
-        //     {
-        //         CustomProperty? entityProperty =
-        //             configurableEntity?.CustomProperties?.FirstOrDefault(f =>
-        //                 f.Name == property.Name
-        //             );
 
-        //         if (entityProperty is not null && entityProperty.Entries.Any())
-        //         {
-        //             entityValue = CustomPropertyConverter.ConvertFromString(
-        //                 entityProperty.Entries.First()
-        //             );
-        //         }
-        //     }
-        //     else
-        //     {
-        //         var entityPropertyValue = entityProperties
-        //             .First(p => p.Name == property.Name)
-        //             .GetValue(entity);
-        //         if (
-        //             entityPropertyValue is not null
-        //             && entityPropertyValue is EntityBase entityRecord
-        //         )
-        //         {
-        //             entityValue = entityRecord.Id;
-        //         }
-        //         else
-        //         {
-        //             entityValue = entityPropertyValue;
-        //         }
-        //     }
-
-        //     if (
-        //         entityValue is not null
-        //         && CustomPropertyConverter.ConvertFromString(property) == entityValue
-        //     )
-        //     {
-        //         SatisfiedConditions.Add(property);
-        //     }
-        //     else
-        //     {
-        //         UnsatisfiedConditions.Add(property);
-        //     }
-        // }
-
-        if (ConditionCount == SatisfiedConditions.Count)
+        if (PropertyConditions.Count == SatisfiedConditions.Count)
         {
             IsSatisfied = true;
         }
