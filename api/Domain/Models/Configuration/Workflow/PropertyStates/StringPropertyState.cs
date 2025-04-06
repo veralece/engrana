@@ -4,7 +4,7 @@ namespace Engrana.Domain.Configuration;
 
 public class StringPropertyState : PropertyState<string>
 {
-    public override bool Equals(EntityBase entity, PropertyInfo[] entityProperties)
+    private object? GetValue(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -21,8 +21,18 @@ public class StringPropertyState : PropertyState<string>
                 ?.GetValue(entity);
         }
 
-        return entityValue is not null && (string)entityValue == Value;
+        return entityValue;
     }
+
+    public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
+    {
+        var entityValue = GetValue(entity, entityProperties);
+        if (entityValue is not null && PropertyCondition is not null)
+            return Equals(entityValue);
+        return false;
+    }
+
+    public override bool Equals(string entityValue) => entityValue == Value;
 
     public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {

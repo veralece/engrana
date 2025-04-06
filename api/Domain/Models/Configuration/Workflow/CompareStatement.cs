@@ -44,7 +44,7 @@ public class CompareStatement : EntityBase
         {
             foreach (var condition in PropertyConditions)
             {
-                _satisfied = condition.Equals(entity, entityPropertyInfo);
+                _satisfied = condition.Compare(entity, entityPropertyInfo);
                 if (_satisfied)
                 {
                     SatisfiedConditions.Add(condition);

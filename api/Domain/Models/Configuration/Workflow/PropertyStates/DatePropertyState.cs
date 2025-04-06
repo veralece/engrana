@@ -4,7 +4,7 @@ namespace Engrana.Domain.Configuration;
 
 public class DatePropertyState : PropertyState<DateTime>
 {
-    public override bool Equals(EntityBase entity, PropertyInfo[] entityProperties)
+    private object? GetValue(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -20,9 +20,26 @@ public class DatePropertyState : PropertyState<DateTime>
                 .FirstOrDefault(p => p.Name == PropertyName)
                 ?.GetValue(entity);
         }
-
-        return entityValue is not null && (DateTime)entityValue == Value;
+        return entityValue;
     }
+
+    public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
+    {
+        var entityValue = GetValue(entity, entityProperties);
+        if (entityValue is not null && PropertyCondition is not null)
+        {
+            return PropertyCondition switch
+            {
+                Condition.Equal => Equals(entityValue),
+                Condition.Less => Value < (DateTime)entityValue,
+                Condition.Greater => Value > (DateTime)entityValue,
+                _ => throw new NotImplementedException()
+            };
+        }
+        return false;
+    }
+
+    public override bool Equals(DateTime entityValue) => entityValue == Value;
 
     public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {

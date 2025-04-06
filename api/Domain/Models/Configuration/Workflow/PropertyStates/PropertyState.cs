@@ -6,7 +6,8 @@ public interface IPropertyState
 {
     bool IsCustomProperty { get; set; }
     string PropertyName { get; set; }
-    bool Equals(EntityBase entity, PropertyInfo[] entityProperties);
+    Condition? PropertyCondition { get; set; }
+    bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
     bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }
 
@@ -14,12 +15,14 @@ public abstract class PropertyStateBase : EntityBase, IPropertyState
 {
     public bool IsCustomProperty { get; set; } = false;
     public required string PropertyName { get; set; }
-    public abstract bool Equals(EntityBase entity, PropertyInfo[] entityProperties);
+    public Condition? PropertyCondition { get; set; }
+    public abstract bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
     public abstract bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }
 
 public abstract class PropertyState<T> : PropertyStateBase
 {
+    public abstract bool Equals(T entityValue);
     public required T Value { get; set; }
 }
 

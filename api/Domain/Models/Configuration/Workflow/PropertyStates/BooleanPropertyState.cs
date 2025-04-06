@@ -4,7 +4,7 @@ namespace Engrana.Domain.Configuration;
 
 public class BooleanPropertyState : PropertyState<bool>
 {
-    public override bool Equals(EntityBase entity, PropertyInfo[] entityProperties)
+    private object? GetValue(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
@@ -20,9 +20,18 @@ public class BooleanPropertyState : PropertyState<bool>
                 .FirstOrDefault(p => p.Name == PropertyName)
                 ?.GetValue(entity);
         }
-
-        return entityValue is not null && (bool)entityValue == Value;
+        return entityValue;
     }
+
+    public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
+    {
+        var entityValue = GetValue(entity, entityProperties);
+        if (entityValue is not null && PropertyCondition is not null)
+            return Equals((bool)entityValue);
+        return false;
+    }
+
+    public override bool Equals(bool entityValue) => entityValue == Value;
 
     public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {
