@@ -7,7 +7,6 @@ namespace Engrana.Infrastructure;
 public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContext(options)
 {
     #region Domain
-
     public DbSet<Asset> Asset { get; set; }
     public DbSet<Change> Change { get; set; }
     public DbSet<ConfigurationItem> ConfigurationItem { get; set; }
@@ -17,13 +16,14 @@ public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContex
     public DbSet<Manufacturer> Manufacturer { get; set; }
     public DbSet<Organization> Organization { get; set; }
     public DbSet<PhysicalAddress> PhysicalAddress { get; set; }
+    public DbSet<Portfolio> Portfolio { get; set; }
+    public DbSet<Project> Project { get; set; }
     public DbSet<Service> Service { get; set; }
     public DbSet<ServiceRequest> ServiceRequest { get; set; }
 
     #endregion
+
     #region Domain.Configuration
-
-
     public DbSet<Workflow> Workflow { get; set; }
     public DbSet<WorkflowStep> WorkflowStep { get; set; }
     public DbSet<Trigger> Trigger { get; set; }

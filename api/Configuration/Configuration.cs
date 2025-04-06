@@ -21,6 +21,8 @@ namespace Engrana.Configuration
             builder.Services.AddScoped<IService<Manufacturer>, ManufacturerService>();
             builder.Services.AddScoped<IService<Organization>, OrganizationService>();
             builder.Services.AddScoped<IService<PhysicalAddress>, PhysicalAddressService>();
+            builder.Services.AddScoped<IService<Portfolio>, PortfolioService>();
+            builder.Services.AddScoped<IService<Project>, ProjectService>();
             builder.Services.AddScoped<IService<Service>, ServiceService>();
             builder.Services.AddScoped<IService<ServiceRequest>, ServiceRequestService>();
         }
