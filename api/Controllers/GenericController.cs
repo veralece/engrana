@@ -133,7 +133,6 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
 
             if (result != null)
             {
-                //todo find out how to enqueue this to a background queue so that the http request can return.
                 await _taskQueue.QueueBackgroundWorkItemAsync(
                     async (serviceProvider, token) =>
                     {
