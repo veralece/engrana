@@ -7,7 +7,7 @@ public class TestData
 {
     public static void Seed(DbContext context, bool _)
     {
-        var testAsset = context.Set<Asset>().FirstOrDefault(a => a.Name == "V-Server-Test");
+        var testAsset = context.Set<Asset>().FirstOrDefault(a => a.Name == "VMWare-Test");
         if (testAsset == null)
         {
             var assetGuid = Guid.NewGuid();
@@ -86,7 +86,7 @@ public class TestData
     {
         var testAsset = context
             .Set<Asset>()
-            .FirstOrDefaultAsync(a => a.Name == "V-Server-Test", cancellationToken);
+            .FirstOrDefaultAsync(a => a.Name == "VMWare-Test", cancellationToken);
         if (testAsset == null)
         {
             var assetGuid = Guid.NewGuid();
