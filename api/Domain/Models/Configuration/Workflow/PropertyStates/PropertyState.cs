@@ -30,7 +30,7 @@ public abstract class PropertyState<T> : PropertyStateBase
 // {
 //     public required Guid Value { get; set; }
 
-//     public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
+//     public override bool Equals(EntityBase entity, PropertyInfo[] entityProperties)
 //     {
 //         object? entityValue = entityProperties.First(p => p.Name == PropertyName).GetValue(entity);
 //         if (entityValue is not null && entityValue is EntityBase entityRecord)

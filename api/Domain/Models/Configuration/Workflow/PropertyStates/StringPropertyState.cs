@@ -4,7 +4,7 @@ namespace Engrana.Domain.Configuration;
 
 public class StringPropertyState : PropertyState<string>
 {
-    public override bool Compare(EntityBase entity, PropertyInfo[] entityProperties)
+    public override bool Equals(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
         if (IsCustomProperty && entity is ConfigurableEntity configurableEntity)
