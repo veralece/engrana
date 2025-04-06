@@ -57,6 +57,14 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
 
             if (entity != null)
             {
+                await _taskQueue.QueueBackgroundWorkItemAsync(
+                    async (serviceProvider, token) =>
+                    {
+                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnRead);
+                    }
+                );
+
                 return StatusCode(
                     StatusCodes.Status200OK,
                     new ApiResult<T>(entity) { Successful = true }
@@ -97,6 +105,13 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
 
             if (result > 0)
             {
+                await _taskQueue.QueueBackgroundWorkItemAsync(
+                    async (serviceProvider, token) =>
+                    {
+                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnChanged);
+                    }
+                );
                 return StatusCode(
                     StatusCodes.Status204NoContent,
                     new ApiResult<T>() { Successful = true }
@@ -167,10 +182,18 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
     {
         try
         {
-            int result = await _service.DeleteAsync(Guid.Parse(id));
+            Guid guid = Guid.Parse(id);
+            int result = await _service.DeleteAsync(guid);
 
             if (result > 0)
             {
+                await _taskQueue.QueueBackgroundWorkItemAsync(
+                    async (serviceProvider, token) =>
+                    {
+                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        await scopedService.CheckEntityTrigger(guid, TriggerType.OnDeleted);
+                    }
+                );
                 return StatusCode(
                     StatusCodes.Status200OK,
                     new ApiResult<T>() { Successful = true }

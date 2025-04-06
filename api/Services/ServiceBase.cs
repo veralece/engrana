@@ -80,14 +80,14 @@ public abstract class ServiceBase<T>(IDbContextFactory<EngranaContext> contextFa
 
         if (triggers.Count > 0)
         {
-            Guid? guid = null;
+            Guid? workflowGuid = null;
             var entityPropertyInfo = entity.GetType().GetProperties();
             foreach (var trigger in triggers)
             {
-                guid = trigger.Check(entity, entityPropertyInfo);
-                if (guid is not null && !workflowIds.Contains((Guid)guid))
+                workflowGuid = trigger.Check(entity, entityPropertyInfo);
+                if (workflowGuid is not null && !workflowIds.Contains((Guid)workflowGuid))
                 {
-                    workflowIds.Add((Guid)guid);
+                    workflowIds.Add((Guid)workflowGuid);
                 }
             }
 
@@ -105,6 +105,59 @@ public abstract class ServiceBase<T>(IDbContextFactory<EngranaContext> contextFa
                         var entityCopy = entity.ShallowCopy<T>();
                         await workflow.Execute(entityCopy, entityPropertyInfo, context);
                         //? save after each workflow?
+                    }
+                }
+            }
+        }
+    }
+
+    public async Task CheckEntityTrigger(Guid guid, TriggerType triggerType)
+    {
+        using var context = _contextFactory.CreateDbContext();
+        IList<Guid> workflowIds = [];
+        var entity = context.Set<T>().FirstOrDefault(e => e.Id == guid);
+        if (entity is not null)
+        {
+            var triggers = await context
+                .Trigger.Where(t => t.TriggerType == triggerType && t.TriggerEntity == entity.Type)
+                .Include(t => t.CompareStatement)
+                .ThenInclude(c => c.BooleanPropertyConditions)
+                .Include(t => t.CompareStatement)
+                .ThenInclude(c => c.NumberPropertyConditions)
+                .Include(t => t.CompareStatement)
+                .ThenInclude(c => c.DatePropertyConditions)
+                .Include(t => t.CompareStatement)
+                .ThenInclude(c => c.StringPropertyConditions)
+                .ToListAsync();
+
+            if (triggers.Count > 0)
+            {
+                Guid? workflowGuid = null;
+                var entityPropertyInfo = entity.GetType().GetProperties();
+                foreach (var trigger in triggers)
+                {
+                    workflowGuid = trigger.Check(entity, entityPropertyInfo);
+                    if (workflowGuid is not null && !workflowIds.Contains((Guid)workflowGuid))
+                    {
+                        workflowIds.Add((Guid)workflowGuid);
+                    }
+                }
+
+                if (workflowIds.Count > 0)
+                {
+                    var workflows = await context
+                        .Workflow.Where(wf => workflowIds.Contains(wf.Id))
+                        .ToListAsync();
+
+                    if (workflows.Count > 0)
+                    {
+                        foreach (var workflow in workflows)
+                        {
+                            //todo determine how to save after workflow is performed
+                            var entityCopy = entity.ShallowCopy<T>();
+                            await workflow.Execute(entityCopy, entityPropertyInfo, context);
+                            //? save after each workflow?
+                        }
                     }
                 }
             }

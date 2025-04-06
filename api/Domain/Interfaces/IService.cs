@@ -20,4 +20,5 @@ public interface IService<T>
     Task<int> UpdateAsync(T entity);
 
     Task CheckEntityTrigger(T entity, TriggerType triggerType);
+    Task CheckEntityTrigger(Guid guid, TriggerType triggerType);
 }
