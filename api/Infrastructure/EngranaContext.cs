@@ -17,6 +17,7 @@ public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContex
     public DbSet<Manufacturer> Manufacturer { get; set; }
     public DbSet<Organization> Organization { get; set; }
     public DbSet<PhysicalAddress> PhysicalAddress { get; set; }
+    public DbSet<Service> Service { get; set; }
     public DbSet<ServiceRequest> ServiceRequest { get; set; }
 
     #endregion
