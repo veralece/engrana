@@ -46,7 +46,15 @@ public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContex
 
     #endregion
 
-    // protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+#pragma warning disable CS8602 // Rethrow to preserve stack details
+        modelBuilder
+            .Entity<ConfigurationItem>()
+            .Property(ci => ci.Version)
+            .HasConversion(v => v.ToString(), v => Version.Parse(v));
+#pragma warning restore CS8602 // Rethrow to preserve stack details
+    }
 
     public async Task<int> SaveChangesAsync()
     {
