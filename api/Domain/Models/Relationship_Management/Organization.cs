@@ -6,6 +6,8 @@ namespace Engrana.Domain;
 public class Organization : ConfigurableEntity
 {
     public override EntityType Type => EntityType.Organization;
+
     #region Entity Framework Navigation Properties
+    public Portfolio? Portfolio { get; set; }
     #endregion
 }

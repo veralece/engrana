@@ -11,6 +11,7 @@ public enum EntityType
     Manufacturer,
     Organization,
     PhysicalAddress,
+    Portfolio,
     Problem,
     Project,
     Service,

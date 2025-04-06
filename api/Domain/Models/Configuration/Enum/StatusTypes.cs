@@ -3,21 +3,24 @@ namespace Engrana.Domain.Configuration;
 public enum AssetStatus
 {
     Active,
+    Under_Maintenance,
     Disposed
 }
 
 public enum ConfigurationItemStatus
 {
-    Inactive,
     Active,
+    Inactive,
     Under_Maintenance,
-    Decommissioned
+    Retired
 }
 
 public enum IncidentStatus
 {
     Logged,
     Assigned,
+    Escalated,
+    Monitoring,
     Resolved,
     Closed
 }
