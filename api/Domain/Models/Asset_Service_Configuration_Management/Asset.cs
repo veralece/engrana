@@ -4,6 +4,7 @@ namespace Engrana.Domain;
 
 public class Asset : ConfigurableEntity
 {
+    public override EntityType Type => EntityType.Asset;
     public string? AssetTag { get; set; }
     public string? Description { get; set; }
     public AssetStatus Status { get; set; } = AssetStatus.Active;

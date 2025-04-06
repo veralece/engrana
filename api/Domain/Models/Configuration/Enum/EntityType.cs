@@ -13,5 +13,6 @@ public enum EntityType
     PhysicalAddress,
     Problem,
     Project,
+    Service,
     ServiceRequest
 }
