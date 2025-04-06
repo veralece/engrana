@@ -1,6 +1,6 @@
 using Engrana.Domain;
 using Engrana.Domain.Configuration;
-using Engrana.Service;
+using Engrana.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Engrana.Controllers;
@@ -138,7 +138,7 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                     async (serviceProvider, token) =>
                     {
                         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckTrigger(entity, TriggerType.OnAdded);
+                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnAdded);
                     }
                 );
 

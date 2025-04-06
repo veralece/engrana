@@ -1,6 +1,7 @@
 using Engrana.Domain;
 using Engrana.Infrastructure;
-using Engrana.Service;
+using Engrana.Infrastructure.Test;
+using Engrana.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Configuration
@@ -20,6 +21,7 @@ namespace Engrana.Configuration
             builder.Services.AddScoped<IService<Manufacturer>, ManufacturerService>();
             builder.Services.AddScoped<IService<Organization>, OrganizationService>();
             builder.Services.AddScoped<IService<PhysicalAddress>, PhysicalAddressService>();
+            builder.Services.AddScoped<IService<Service>, ServiceService>();
             builder.Services.AddScoped<IService<ServiceRequest>, ServiceRequestService>();
         }
 
@@ -34,7 +36,11 @@ namespace Engrana.Configuration
 
             builder.Services.AddDbContextFactory<EngranaContext>(options =>
             {
-                options.UseSqlServer(connectionString, builder => builder.EnableRetryOnFailure());
+                options
+                    .UseSqlServer(connectionString, builder => builder.EnableRetryOnFailure())
+                    .UseSeeding(TestData.Seed)
+                    .UseAsyncSeeding(TestData.SeedAsync);
+                ;
             });
         }
     }

@@ -3,7 +3,7 @@ using Engrana.Domain.Configuration;
 using Engrana.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Engrana.Service;
+namespace Engrana.Services;
 
 //todo consider other generic operations
 /// <summary>
@@ -62,7 +62,7 @@ public abstract class ServiceBase<T>(IDbContextFactory<EngranaContext> contextFa
 
     //todo develop the trigger to queue a workflow with the entity
     //pull all triggers for the affected entity type and run the trigger conditions.
-    public async Task CheckTrigger(T entity, TriggerType triggerType)
+    public async Task CheckEntityTrigger(T entity, TriggerType triggerType)
     {
         using var context = _contextFactory.CreateDbContext();
         IList<Guid> workflowIds = [];

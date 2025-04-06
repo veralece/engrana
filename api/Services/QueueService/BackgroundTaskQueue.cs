@@ -1,6 +1,6 @@
 using System.Threading.Channels;
 
-namespace Engrana.Service;
+namespace Engrana.Services;
 
 public interface IBackgroundTaskQueue
 {

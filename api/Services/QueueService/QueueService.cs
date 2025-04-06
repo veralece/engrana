@@ -1,4 +1,4 @@
-namespace Engrana.Service;
+namespace Engrana.Services;
 
 public sealed class QueueService(
     IBackgroundTaskQueue taskQueue,
