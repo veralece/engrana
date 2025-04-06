@@ -35,18 +35,6 @@ public class CompareStatement : EntityBase
 
     [NotMapped]
     public IList<IPropertyState> UnsatisfiedConditions { get; set; } = [];
-    private int ConditionCount
-    {
-        get =>
-            StringPropertyConditions.Count
-            + DatePropertyConditions.Count
-            + BooleanPropertyConditions.Count
-            + NumberPropertyConditions.Count;
-        // + EntityPropertyConditions.Count;
-        // + IntegerArrayPropertiesToCompare.Count
-        // + StringArrayPropertiesToCompare.Count
-        // + DateArrayPropertiesToCompare.Count;
-    }
 
     //todo maybe add operators such as EqualTo, Contains, GreaterThan, LessThan, etc
     public void Evaluate(EntityBase entity, PropertyInfo[] entityPropertyInfo)
@@ -56,7 +44,7 @@ public class CompareStatement : EntityBase
         {
             foreach (var condition in PropertyConditions)
             {
-                _satisfied = condition.Compare(entity, entityPropertyInfo);
+                _satisfied = condition.Equals(entity, entityPropertyInfo);
                 if (_satisfied)
                 {
                     SatisfiedConditions.Add(condition);
