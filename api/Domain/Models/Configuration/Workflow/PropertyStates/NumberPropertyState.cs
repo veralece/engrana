@@ -32,8 +32,8 @@ public class NumberPropertyState : PropertyState<int>
             return PropertyCondition switch
             {
                 Condition.Equal => Equals((int)entityValue),
-                Condition.Less => Value < (int)entityValue,
-                Condition.Greater => Value > (int)entityValue,
+                Condition.Less => (int)entityValue < Value,
+                Condition.Greater => (int)entityValue > Value,
                 _ => throw new NotImplementedException(),
             };
         }

@@ -31,8 +31,8 @@ public class DatePropertyState : PropertyState<DateTime>
             return PropertyCondition switch
             {
                 Condition.Equal => Equals(entityValue),
-                Condition.Less => Value < (DateTime)entityValue,
-                Condition.Greater => Value > (DateTime)entityValue,
+                Condition.Less => (DateTime)entityValue < Value,
+                Condition.Greater => (DateTime)entityValue > Value,
                 _ => throw new NotImplementedException()
             };
         }

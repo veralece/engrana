@@ -1,23 +1,31 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Engrana.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Domain.Configuration;
 
 public class Workflow : EntityBase
 {
-    public IList<WorkflowStep> WorkflowSteps { get; set; } = [];
+    public WorkflowType WorkflowType { get; set; } = WorkflowType.Manual;
+    public IList<DataStep> DataSteps { get; set; } = [];
+    public IList<ConditionStep> ConditionSteps { get; set; } = [];
+
+    [NotMapped]
+    public IList<StepBase> WorkflowSteps => [.. DataSteps, .. ConditionSteps];
 
     public async Task<bool> Execute(
-        EntityBase contextEntity,
+        EntityBase entity,
         PropertyInfo[] entityPropertyInfo,
-        EngranaContext context
+        IDbContextFactory<EngranaContext> contextFactory
     )
     {
         bool executedSuccessfully = true;
         int result = 0;
-        foreach (var wf_step in WorkflowSteps)
+        using var context = contextFactory.CreateDbContext();
+        foreach (var wf_step in WorkflowSteps.OrderBy(e => e.Order))
         {
-            if (wf_step.Step(contextEntity, entityPropertyInfo) is false)
+            if (wf_step.Step(entity, entityPropertyInfo) is false)
             {
                 executedSuccessfully = false;
                 break;
