@@ -25,9 +25,10 @@ public class EngranaContext(DbContextOptions<EngranaContext> options) : DbContex
 
     #region Domain.Configuration
     public DbSet<Workflow> Workflow { get; set; }
-    public DbSet<WorkflowStep> WorkflowStep { get; set; }
+    public DbSet<DataStep> DataStep { get; set; }
+    public DbSet<ConditionStep> ConditionStep { get; set; }
     public DbSet<Trigger> Trigger { get; set; }
-    public DbSet<CompareStatement> CompareStatement { get; set; }
+    public DbSet<ConditionStatement> ConditionStatement { get; set; }
     public DbSet<StringPropertyState> PropertyStateString { get; set; }
     public DbSet<StringProperty> StringProperty { get; set; }
     public DbSet<StringSet> StringSet { get; set; }

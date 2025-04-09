@@ -5,5 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Engrana.Services;
 
 //todo determine which non-CRUD functions to create
-public class PortfolioService(IDbContextFactory<EngranaContext> contextFactory)
-    : ServiceBase<Portfolio>(contextFactory) { }
+public class PortfolioService(
+    IDbContextFactory<EngranaContext> contextFactory,
+    IBackgroundTaskQueue taskQueue
+) : ServiceBase<Portfolio>(contextFactory, taskQueue) { }

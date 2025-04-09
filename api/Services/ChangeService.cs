@@ -5,5 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Engrana.Services;
 
 //todo determine which non-CRUD functions to create
-public class ChangeService(IDbContextFactory<EngranaContext> contextFactory)
-    : ServiceBase<Change>(contextFactory) { }
+public class ChangeService(
+    IDbContextFactory<EngranaContext> contextFactory,
+    IBackgroundTaskQueue taskQueue
+) : ServiceBase<Change>(contextFactory, taskQueue) { }

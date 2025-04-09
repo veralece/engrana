@@ -5,5 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Engrana.Services;
 
 //todo determine which non-CRUD functions to create
-public class PhysicalAddressService(IDbContextFactory<EngranaContext> contextFactory)
-    : ServiceBase<PhysicalAddress>(contextFactory) { }
+public class PhysicalAddressService(
+    IDbContextFactory<EngranaContext> contextFactory,
+    IBackgroundTaskQueue taskQueue
+) : ServiceBase<PhysicalAddress>(contextFactory, taskQueue) { }

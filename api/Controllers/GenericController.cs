@@ -61,7 +61,7 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                     async (serviceProvider, token) =>
                     {
                         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnRead);
+                        await scopedService.CheckEntityWorkflows(entity, ActionType.OnRead);
                     }
                 );
 
@@ -109,7 +109,7 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                     async (serviceProvider, token) =>
                     {
                         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnChanged);
+                        await scopedService.CheckEntityWorkflows(entity, ActionType.OnChanged);
                     }
                 );
                 return StatusCode(
@@ -152,7 +152,7 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                     async (serviceProvider, token) =>
                     {
                         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckEntityTrigger(entity, TriggerType.OnAdded);
+                        await scopedService.CheckEntityWorkflows(entity, ActionType.OnAdded);
                     }
                 );
 
@@ -191,7 +191,7 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                     async (serviceProvider, token) =>
                     {
                         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckEntityTrigger(guid, TriggerType.OnDeleted);
+                        await scopedService.CheckEntityWorkflows(guid, ActionType.OnDeleted);
                     }
                 );
                 return StatusCode(

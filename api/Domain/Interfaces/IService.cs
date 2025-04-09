@@ -1,4 +1,6 @@
+using Engrana.Configuration;
 using Engrana.Domain.Configuration;
+using Engrana.Infrastructure;
 
 namespace Engrana.Domain;
 
@@ -19,6 +21,6 @@ public interface IService<T>
     Task<T?> GetByIdAsync(Guid id);
     Task<int> UpdateAsync(T entity);
 
-    Task CheckEntityTrigger(T entity, TriggerType triggerType);
-    Task CheckEntityTrigger(Guid guid, TriggerType triggerType);
+    Task CheckEntityWorkflows(Guid guid, ActionType actionType);
+    Task CheckEntityWorkflows(T entity, ActionType actionType);
 }
