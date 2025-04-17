@@ -9,7 +9,7 @@ public abstract class EntityBase
     public required string Name { get; set; }
 
     [NotMapped]
-    public virtual EntityType Type { get; }
+    public virtual EntityType EntityType { get; }
     public DateTime? Created { get; set; }
     public Guid? CreatedBy { get; set; }
     public DateTime? LastModified { get; set; }

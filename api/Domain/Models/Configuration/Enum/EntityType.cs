@@ -13,6 +13,7 @@ public enum EntityType
     PhysicalAddress,
     Portfolio,
     Problem,
+    Profile,
     Project,
     Service,
     ServiceRequest

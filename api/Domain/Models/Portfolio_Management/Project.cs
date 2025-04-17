@@ -6,5 +6,5 @@ namespace Engrana.Domain;
 public class Project : ConfigurableEntity
 {
     public string? Description { get; set; }
-    public override EntityType Type => EntityType.Project;
+    public override EntityType EntityType => EntityType.Project;
 }

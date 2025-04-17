@@ -147,7 +147,7 @@ public abstract class ServiceBase<T>(
         EngranaContext context
     ) =>
         await context
-            .Trigger.Where(t => t.ActionType == ActionType && t.TriggerEntity == entity.Type)
+            .Trigger.Where(t => t.ActionType == ActionType && t.TriggerEntity == entity.EntityType)
             .Include(t => t.ConditionStatement)
             .ThenInclude(c => c.BooleanPropertyStateConditions)
             .Include(t => t.ConditionStatement)

@@ -5,7 +5,7 @@ namespace Engrana.Domain;
 //TODO apply formatting constraints?
 public class PhysicalAddress : ConfigurableEntity
 {
-    public override EntityType Type => EntityType.PhysicalAddress;
+    public override EntityType EntityType => EntityType.PhysicalAddress;
     public string? Address { get; set; }
     public string? County { get; set; }
     public string? City { get; set; }

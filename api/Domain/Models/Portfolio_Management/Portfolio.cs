@@ -5,7 +5,7 @@ namespace Engrana.Domain;
 //todo create their controller, service, dbcontext
 public class Portfolio : ConfigurableEntity
 {
-    public override EntityType Type => EntityType.Portfolio;
+    public override EntityType EntityType => EntityType.Portfolio;
     public string? Description { get; set; }
 
     #region Entity Framework Navigation Properties

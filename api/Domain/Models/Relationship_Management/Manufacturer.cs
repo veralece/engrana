@@ -6,7 +6,7 @@ namespace Engrana.Domain;
 //licenses, contracts, policies...
 public class Manufacturer : ConfigurableEntity
 {
-    public override EntityType Type => EntityType.Manufacturer;
+    public override EntityType EntityType => EntityType.Manufacturer;
     public IList<string>? Urls { get; set; } = [];
     #region Entity Framework Navigation Properties
     public IList<PhysicalAddress>? Addresses { get; set; } = [];

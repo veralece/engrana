@@ -36,13 +36,11 @@ public class ConditionStatement : EntityBase
     //todo maybe add operators such as EqualTo, Contains, GreaterThan, LessThan, etc
     public void Evaluate(EntityBase entity, PropertyInfo[] entityPropertyInfo)
     {
-        bool _satisfied;
         if (PropertyStateConditions.Count > 0)
         {
             foreach (var condition in PropertyStateConditions)
             {
-                _satisfied = condition.Compare(entity, entityPropertyInfo);
-                if (_satisfied)
+                if (condition.Compare(entity, entityPropertyInfo))
                 {
                     SatisfiedConditions.Add(condition);
                 }

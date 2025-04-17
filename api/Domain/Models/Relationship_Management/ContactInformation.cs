@@ -4,7 +4,7 @@ namespace Engrana.Domain;
 
 public class ContactInformation : ConfigurableEntity
 {
-    public override EntityType Type => EntityType.ContactInformation;
+    public override EntityType EntityType => EntityType.ContactInformation;
     public string? Email { get; set; }
     public string? Phone { get; set; }
     #region Entity Framework Navigation Properties

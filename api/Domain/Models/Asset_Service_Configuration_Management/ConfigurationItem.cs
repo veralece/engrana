@@ -4,7 +4,7 @@ namespace Engrana.Domain;
 
 public class ConfigurationItem : ConfigurableEntity
 {
-    public override EntityType Type => EntityType.ConfigurationItem;
+    public override EntityType EntityType => EntityType.ConfigurationItem;
     public string? Description { get; set; }
     public ConfigurationItemStatus Status { get; set; } = ConfigurationItemStatus.Inactive;
     public Version? Version { get; set; }
