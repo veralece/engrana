@@ -27,7 +27,7 @@ public class DataStep : StepBase
             if (property.TransferState(entity, entityProperties) is false)
                 FailedProperties.Add(property);
         }
-        if (!FailedProperties.Any())
+        if (FailedProperties.Count == 0)
         {
             return true;
         }

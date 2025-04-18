@@ -57,13 +57,14 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
 
             if (entity != null)
             {
-                await _taskQueue.QueueBackgroundWorkItemAsync(
-                    async (serviceProvider, token) =>
-                    {
-                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                        await scopedService.CheckEntityWorkflows(entity, ActionType.OnRead);
-                    }
-                );
+                //todo try and make on-read triggers opt-in instead
+                // await _taskQueue.QueueBackgroundWorkItemAsync(
+                //     async (serviceProvider, token) =>
+                //     {
+                //         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                //         await scopedService.CheckEntityWorkflows(entity, ActionType.OnRead);
+                //     }
+                // );
 
                 return StatusCode(
                     StatusCodes.Status200OK,
