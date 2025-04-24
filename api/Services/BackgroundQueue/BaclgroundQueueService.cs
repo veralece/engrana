@@ -1,8 +1,8 @@
 namespace Engrana.Services;
 
-public sealed class QueueService(
+public sealed class BackgroundQueueService(
     IBackgroundTaskQueue taskQueue,
-    ILogger<QueueService> logger,
+    ILogger<BackgroundQueueService> logger,
     IServiceProvider serviceProvider
 ) : BackgroundService
 {
@@ -14,7 +14,7 @@ public sealed class QueueService(
             Tap W to add a work item to the 
             background queue.
             """,
-            nameof(QueueService)
+            nameof(BackgroundQueueService)
         );
 
         return ProcessTaskQueueAsync(stoppingToken);
@@ -44,7 +44,7 @@ public sealed class QueueService(
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{nameof(QueueService)} is stopping.");
+        logger.LogInformation($"{nameof(BackgroundQueueService)} is stopping.");
 
         await base.StopAsync(stoppingToken);
     }
