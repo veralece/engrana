@@ -1,4 +1,6 @@
 using Engrana.Configuration;
+using Engrana.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        using var context = scope.ServiceProvider.GetService<EngranaContext>();
+        if (context is not null)
+        {
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.MigrateAsync();
+        }
+    }
     app.UseSwagger();
     app.UseSwaggerUI();
 }
