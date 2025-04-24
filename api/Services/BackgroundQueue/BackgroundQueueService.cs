@@ -11,8 +11,6 @@ public sealed class BackgroundQueueService(
         logger.LogInformation(
             """
             {Name} is running.
-            Tap W to add a work item to the 
-            background queue.
             """,
             nameof(BackgroundQueueService)
         );
