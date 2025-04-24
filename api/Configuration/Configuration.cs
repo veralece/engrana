@@ -1,4 +1,5 @@
 using Engrana.Domain;
+using Engrana.Domain.Configuration;
 using Engrana.Infrastructure;
 using Engrana.Infrastructure.Test;
 using Engrana.Services;
@@ -10,7 +11,7 @@ namespace Engrana.Configuration
     {
         public static void RegisterServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddHostedService<QueueService>();
+            builder.Services.AddHostedService<BackgroundQueueService>();
             builder.Services.AddSingleton<IBackgroundTaskQueue>(_ => new BackgroundTaskQueue(100));
             builder.Services.AddScoped<IService<Asset>, AssetService>();
             builder.Services.AddScoped<IService<ConfigurationItem>, ConfigurationItemService>();
@@ -22,8 +23,11 @@ namespace Engrana.Configuration
             builder.Services.AddScoped<IService<Organization>, OrganizationService>();
             builder.Services.AddScoped<IService<PhysicalAddress>, PhysicalAddressService>();
             builder.Services.AddScoped<IService<Portfolio>, PortfolioService>();
+            builder.Services.AddScoped<IService<Profile>, ProfileService>();
             builder.Services.AddScoped<IService<Project>, ProjectService>();
+            builder.Services.AddScoped<IService<OrganizationQueue>, OrganizationQueueService>();
             builder.Services.AddScoped<IService<Service>, ServiceService>();
+            builder.Services.AddScoped<IService<ServiceCategory>, ServiceCategoryService>();
             builder.Services.AddScoped<IService<ServiceRequest>, ServiceRequestService>();
         }
 

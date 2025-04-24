@@ -15,6 +15,8 @@ public enum EntityType
     Problem,
     Profile,
     Project,
+    OrganizationQueue,
     Service,
-    ServiceRequest
+    ServiceCategory,
+    ServiceRequest,
 }
