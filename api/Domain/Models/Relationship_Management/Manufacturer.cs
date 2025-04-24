@@ -9,7 +9,7 @@ public class Manufacturer : ConfigurableEntity
     public override EntityType EntityType => EntityType.Manufacturer;
     public IList<string>? Urls { get; set; } = [];
     #region Entity Framework Navigation Properties
-    public IList<PhysicalAddress>? Addresses { get; set; } = [];
-    public IList<ContactInformation>? Contacts { get; set; } = [];
+    public IList<PhysicalAddress>? Addresses { get; init; } = [];
+    public IList<ContactInformation>? Contacts { get; init; } = [];
     #endregion
 }

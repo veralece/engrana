@@ -3,6 +3,15 @@ using Engrana.Domain.Configuration;
 
 namespace Engrana.Domain;
 
+public static class EntityBaseExtenstions
+{
+    public static T GetByName<T>(this IEnumerable<T> source, string name)
+        where T : EntityBase => source.First(e => e.Name == name);
+
+    public static T? GetByNameOrDefault<T>(this IEnumerable<T> source, string name)
+        where T : EntityBase => source.FirstOrDefault(e => e.Name == name);
+}
+
 public abstract class EntityBase
 {
     public Guid Id { get; set; }

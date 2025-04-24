@@ -8,6 +8,6 @@ public class ContactInformation : ConfigurableEntity
     public string? Email { get; set; }
     public string? Phone { get; set; }
     #region Entity Framework Navigation Properties
-    public IList<PhysicalAddress>? Addresses { get; set; } = [];
+    public IList<PhysicalAddress>? Addresses { get; init; } = [];
     #endregion
 }

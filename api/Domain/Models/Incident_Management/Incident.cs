@@ -9,7 +9,8 @@ public class Incident : ConfigurableEntity
     public string? Description { get; set; }
 
     #region Entity Framework Navigation Properties
-    public IList<ContactInformation>? Contacts { get; set; } = [];
-    public IList<ConfigurationItem>? AffectedCIs { get; set; } = [];
+    public required ContactInformation PrimaryContact { get; set; }
+    public IList<ContactInformation> AdditionalContacts { get; init; } = [];
+    public IList<ConfigurationItem> AffectedCIs { get; init; } = [];
     #endregion
 }
