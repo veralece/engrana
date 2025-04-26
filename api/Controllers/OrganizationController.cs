@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class OrganizationController(
     ILogger<OrganizationController> logger,
-    OrganizationService service,
+    IService<Organization> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Organization>(service, taskQueue)
 {

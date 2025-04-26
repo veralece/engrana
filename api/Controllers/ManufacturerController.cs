@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ManufacturerController(
     ILogger<ManufacturerController> logger,
-    ManufacturerService service,
+    IService<Manufacturer> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Manufacturer>(service, taskQueue)
 {

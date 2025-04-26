@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ChangeController(
     ILogger<ChangeController> logger,
-    ChangeService service,
+    IService<Change> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Change>(service, taskQueue)
 {

@@ -1,3 +1,4 @@
+using Engrana.Domain;
 using Engrana.Domain.Configuration;
 using Engrana.Services;
 
@@ -5,7 +6,7 @@ namespace Engrana.Controllers;
 
 public class ServiceCategoryController(
     ILogger<ServiceCategoryController> logger,
-    ServiceCategoryService service,
+    IService<ServiceCategory> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<ServiceCategory>(service, taskQueue)
 {

@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ConfigurationItemController(
     ILogger<ConfigurationItemController> logger,
-    ConfigurationItemService service,
+    IService<ConfigurationItem> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<ConfigurationItem>(service, taskQueue)
 {

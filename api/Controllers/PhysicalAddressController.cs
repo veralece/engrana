@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class PhysicalAddressController(
     ILogger<PhysicalAddressController> logger,
-    PhysicalAddressService service,
+    IService<PhysicalAddress> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<PhysicalAddress>(service, taskQueue)
 {

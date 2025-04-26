@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ContactInformationController(
     ILogger<ContactInformationController> logger,
-    ContactInformationService service,
+    IService<ContactInformation> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<ContactInformation>(service, taskQueue)
 {

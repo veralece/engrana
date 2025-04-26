@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class PortfolioController(
     ILogger<PortfolioController> logger,
-    PortfolioService service,
+    IService<Portfolio> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Portfolio>(service, taskQueue)
 {

@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class IncidentController(
     ILogger<IncidentController> logger,
-    IncidentService service,
+    IService<Incident> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Incident>(service, taskQueue)
 {

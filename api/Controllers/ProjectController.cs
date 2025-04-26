@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ProjectController(
     ILogger<ProjectController> logger,
-    ProjectService service,
+    IService<Project> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Project>(service, taskQueue)
 {

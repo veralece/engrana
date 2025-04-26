@@ -12,11 +12,11 @@ namespace Engrana.Controllers;
 /// <param name="service"></param>
 [ApiController]
 [Route("v1/[controller]")]
-public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTaskQueue taskQueue)
+public abstract class GenericController<T>(IService<T> service, IBackgroundTaskQueue taskQueue)
     : ControllerBase
     where T : EntityBase
 {
-    private readonly ServiceBase<T> _service = service;
+    private readonly IService<T> _service = service;
     private readonly IBackgroundTaskQueue _taskQueue = taskQueue;
 
     [HttpGet]
@@ -61,7 +61,8 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                 // await _taskQueue.QueueBackgroundWorkItemAsync(
                 //     async (serviceProvider, token) =>
                 //     {
-                //         var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                //         using var scope = serviceProvider.CreateScope();
+                //         var scopedService = scope.ServiceProvider.GetRequiredService<IService<T>>();
                 //         await scopedService.CheckEntityWorkflows(entity, ActionType.OnRead);
                 //     }
                 // );
@@ -109,12 +110,13 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                 await _taskQueue.QueueBackgroundWorkItemAsync(
                     async (serviceProvider, token) =>
                     {
-                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        using var scope = serviceProvider.CreateScope();
+                        var scopedService = scope.ServiceProvider.GetRequiredService<IService<T>>();
                         await scopedService.CheckEntityWorkflows(entity, ActionType.OnChanged);
                     }
                 );
                 return StatusCode(
-                    StatusCodes.Status204NoContent,
+                    StatusCodes.Status202Accepted,
                     new ApiResult<T>() { Successful = true }
                 );
             }
@@ -152,7 +154,8 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                 await _taskQueue.QueueBackgroundWorkItemAsync(
                     async (serviceProvider, token) =>
                     {
-                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        using var scope = serviceProvider.CreateScope();
+                        var scopedService = scope.ServiceProvider.GetRequiredService<IService<T>>();
                         await scopedService.CheckEntityWorkflows(entity, ActionType.OnAdded);
                     }
                 );
@@ -191,7 +194,8 @@ public abstract class GenericController<T>(ServiceBase<T> service, IBackgroundTa
                 await _taskQueue.QueueBackgroundWorkItemAsync(
                     async (serviceProvider, token) =>
                     {
-                        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
+                        using var scope = serviceProvider.CreateScope();
+                        var scopedService = scope.ServiceProvider.GetRequiredService<IService<T>>();
                         await scopedService.CheckEntityWorkflows(guid, ActionType.OnDeleted);
                     }
                 );

@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class AssetController(
     ILogger<AssetController> logger,
-    AssetService service,
+    IService<Asset> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Asset>(service, taskQueue)
 {

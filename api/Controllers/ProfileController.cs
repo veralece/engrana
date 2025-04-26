@@ -5,7 +5,7 @@ namespace Engrana.Controllers;
 
 public class ProfileController(
     ILogger<ProfileController> logger,
-    ProfileService service,
+    IService<Profile> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<Profile>(service, taskQueue)
 {

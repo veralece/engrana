@@ -8,7 +8,12 @@ public class TestData
 {
     public static void Seed(DbContext context, bool _)
     {
-        Organization org = new() { Id = Guid.NewGuid(), Name = "Information Technology" };
+        Organization org =
+            new()
+            {
+                Id = new Guid("1D6BB7CD-C70B-4189-AD55-F4F3EAD98815"),
+                Name = "Information Technology"
+            };
         OrganizationQueue orgQueue =
             new()
             {
@@ -211,7 +216,12 @@ public class TestData
         CancellationToken cancellationToken
     )
     {
-        Organization org = new() { Id = Guid.NewGuid(), Name = "Information Technology" };
+        Organization org =
+            new()
+            {
+                Id = new Guid("1D6BB7CD-C70B-4189-AD55-F4F3EAD98815"),
+                Name = "Information Technology"
+            };
         OrganizationQueue orgQueue =
             new()
             {

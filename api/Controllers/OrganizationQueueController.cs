@@ -1,3 +1,4 @@
+using Engrana.Domain;
 using Engrana.Domain.Configuration;
 using Engrana.Services;
 
@@ -5,7 +6,7 @@ namespace Engrana.Controllers;
 
 public class OrganizationQueueController(
     ILogger<OrganizationQueueController> logger,
-    OrganizationQueueService service,
+    IService<OrganizationQueue> service,
     IBackgroundTaskQueue taskQueue
 ) : GenericController<OrganizationQueue>(service, taskQueue)
 {
