@@ -14,7 +14,6 @@ public class ConditionStatement : EntityBase
 
     // public IList<EntityPropertyState> EntityPropertyStateConditions { get; init; } = [];
 
-    //todo test this functionality
     [NotMapped]
     public IList<IPropertyState> PropertyStateConditions
     {

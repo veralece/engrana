@@ -2,7 +2,7 @@ using Engrana.Domain.Configuration;
 
 namespace Engrana.Domain;
 
-//todo create their controller, service, dbcontext
+//todo add other data points relevant to changes
 public class Portfolio : ConfigurableEntity
 {
     public override EntityType EntityType => EntityType.Portfolio;

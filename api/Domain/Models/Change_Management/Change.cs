@@ -2,7 +2,7 @@ using Engrana.Domain.Configuration;
 
 namespace Engrana.Domain;
 
-//todo add other data points relevant to organizations
+//todo add other data points relevant to changes
 public class Change : ConfigurableEntity
 {
     public override EntityType EntityType => EntityType.Change;
