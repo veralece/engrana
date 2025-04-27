@@ -12,12 +12,16 @@ namespace Engrana.Controllers;
 /// <param name="service"></param>
 [ApiController]
 [Route("v1/[controller]")]
-public abstract class GenericController<T>(IService<T> service, IBackgroundTaskQueue taskQueue)
-    : ControllerBase
+public abstract class GenericController<T>(
+    IService<T> service,
+    IBackgroundTaskQueue taskQueue,
+    ILogger<T> logger
+) : ControllerBase
     where T : EntityBase
 {
     private readonly IService<T> _service = service;
     private readonly IBackgroundTaskQueue _taskQueue = taskQueue;
+    private readonly ILogger<T> _logger = logger;
 
     [HttpGet]
     public async Task<ActionResult<ApiResult<IEnumerable<T>>>> GetAll()

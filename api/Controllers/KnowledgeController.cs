@@ -4,10 +4,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class KnowledgeController(
-    ILogger<KnowledgeController> logger,
+    ILogger<KnowledgeArticle> logger,
     IService<KnowledgeArticle> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<KnowledgeArticle>(service, taskQueue)
-{
-    private readonly ILogger<KnowledgeController> _logger = logger;
-}
+) : GenericController<KnowledgeArticle>(service, taskQueue, logger) { }

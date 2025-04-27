@@ -4,10 +4,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class ServiceRequestController(
-    ILogger<ServiceRequestController> logger,
+    ILogger<ServiceRequest> logger,
     IService<ServiceRequest> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<ServiceRequest>(service, taskQueue)
-{
-    private readonly ILogger<ServiceRequestController> _logger = logger;
-}
+) : GenericController<ServiceRequest>(service, taskQueue, logger) { }

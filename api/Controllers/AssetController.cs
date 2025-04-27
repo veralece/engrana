@@ -4,10 +4,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class AssetController(
-    ILogger<AssetController> logger,
+    ILogger<Asset> logger,
     IService<Asset> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<Asset>(service, taskQueue)
-{
-    private readonly ILogger<AssetController> _logger = logger;
-}
+) : GenericController<Asset>(service, taskQueue, logger) { }

@@ -5,10 +5,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class WorkflowController(
-    ILogger<WorkflowController> logger,
+    ILogger<Workflow> logger,
     IService<Workflow> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<Workflow>(service, taskQueue)
-{
-    private readonly ILogger<WorkflowController> _logger = logger;
-}
+) : GenericController<Workflow>(service, taskQueue, logger) { }

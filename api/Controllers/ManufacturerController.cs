@@ -4,10 +4,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class ManufacturerController(
-    ILogger<ManufacturerController> logger,
+    ILogger<Manufacturer> logger,
     IService<Manufacturer> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<Manufacturer>(service, taskQueue)
-{
-    private readonly ILogger<ManufacturerController> _logger = logger;
-}
+) : GenericController<Manufacturer>(service, taskQueue, logger) { }

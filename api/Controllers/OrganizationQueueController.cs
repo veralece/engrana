@@ -5,10 +5,7 @@ using Engrana.Services;
 namespace Engrana.Controllers;
 
 public class OrganizationQueueController(
-    ILogger<OrganizationQueueController> logger,
+    ILogger<OrganizationQueue> logger,
     IService<OrganizationQueue> service,
     IBackgroundTaskQueue taskQueue
-) : GenericController<OrganizationQueue>(service, taskQueue)
-{
-    private readonly ILogger<OrganizationQueueController> _logger = logger;
-}
+) : GenericController<OrganizationQueue>(service, taskQueue, logger) { }
