@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Engrana.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Domain.Configuration;
 
@@ -20,8 +22,17 @@ public class DataStep : StepBase
     [NotMapped]
     public IList<IPropertyState> FailedProperties { get; set; } = [];
 
-    public override bool Step(EntityBase entity, PropertyInfo[] entityProperties)
+    public override bool Step(
+        EntityBase entity,
+        PropertyInfo[] entityProperties,
+        EngranaContext? context
+    )
     {
+        if (context == null)
+        {
+            return false;
+        }
+
         foreach (var property in PropertiesToUpdate)
         {
             if (property.TransferState(entity, entityProperties) is false)
@@ -29,6 +40,8 @@ public class DataStep : StepBase
         }
         if (FailedProperties.Count == 0)
         {
+            var entry = context.Attach(entity);
+            entry.State = EntityState.Modified;
             return true;
         }
 

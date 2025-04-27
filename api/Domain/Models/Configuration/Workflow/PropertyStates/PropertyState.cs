@@ -15,7 +15,7 @@ public abstract class PropertyStateBase : EntityBase, IPropertyState
 {
     public bool IsCustomProperty { get; set; } = false;
     public required string PropertyName { get; set; }
-    public Condition? PropertyCondition { get; set; }
+    public virtual Condition? PropertyCondition { get; set; }
     public abstract bool Compare(EntityBase entity, PropertyInfo[] entityProperties);
     public abstract bool TransferState(EntityBase entity, PropertyInfo[] entityProperties);
 }

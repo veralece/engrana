@@ -68,64 +68,45 @@ public abstract class ServiceBase<T>(
 
     //todo develop the trigger to queue a workflow with the entity
     //pull all triggers for the affected entity type and run the trigger conditions.
-    public async Task CheckEntityWorkflows(T entity, ActionType ActionType)
+    public async Task CheckEntityWorkflows(T entity, ActionType actionType)
     {
         IList<Workflow>? workflows;
         var entityProperties = entity.GetType().GetProperties();
 
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var triggers = await GetTriggersAsync(entity, ActionType, _context);
+            var triggers = await GetTriggersAsync(entity, actionType, _context);
             workflows = await EvaluateTriggers(entity, entityProperties, triggers, _context);
         }
 
         if (workflows is not null && workflows.Count > 0)
         {
+            bool successful;
             foreach (var workflow in workflows)
             {
                 //let's sequentially run workflows for now
-                await workflow.Execute(entity.ShallowCopy<T>(), entityProperties, _contextFactory);
-                // await _taskQueue.QueueBackgroundWorkItemAsync(
-                //     async (serviceProvider, token) =>
-                //     {
-                //?        var scopedService = serviceProvider.GetRequiredService<IService<T>>();
-                //?         await scopedService.ExecuteWorkflow(workflow, entity);
-                //?         would queuing the workflows into their own separate thread be worth it?
-                //     }
-                // );
+                successful = await workflow.Execute(
+                    entity.ShallowCopy<T>(),
+                    entityProperties,
+                    _contextFactory
+                );
+
+                //todo detemine if workflow should trigger other automated workflows
+                // if (successful)
+                // {
+                //     await _taskQueue.QueueBackgroundWorkItemAsync(
+                //         async (serviceProvider, token) =>
+                //         {
+                //             using var scope = serviceProvider.CreateScope();
+                //             var scopedService = scope.ServiceProvider.GetRequiredService<
+                //                 IService<T>
+                //             >();
+                //             await scopedService.CheckEntityWorkflows(entity, actionType);
+                //         }
+                //     );
+                // }
             }
         }
-        // if (triggers.Count > 0)
-        // {
-        //     Guid? workflowGuid = null;
-        //     var entityPropertyInfo = entity.GetType().GetProperties();
-        //     foreach (var trigger in triggers)
-        //     {
-        //         workflowGuid = trigger.Check(entity, entityPropertyInfo);
-        //         if (workflowGuid is not null && !workflowIds.Contains((Guid)workflowGuid))
-        //         {
-        //             workflowIds.Add((Guid)workflowGuid);
-        //         }
-        //     }
-
-        //     if (workflowIds.Count > 0)
-        //     {
-        //         var workflows = await context
-        //             .Workflow.Where(wf => workflowIds.Contains(wf.Id))
-        //             .ToListAsync();
-
-        //         if (workflows.Count > 0)
-        //         {
-        //             foreach (var workflow in workflows)
-        //             {
-        //                 //todo determine how to save after workflow is performed
-        //                 var entityCopy = entity.ShallowCopy<T>();
-        //                 await workflow.Execute(entityCopy, entityPropertyInfo, context);
-        //                 //? save after each workflow?
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     public async Task CheckEntityWorkflows(Guid guid, ActionType actionType)

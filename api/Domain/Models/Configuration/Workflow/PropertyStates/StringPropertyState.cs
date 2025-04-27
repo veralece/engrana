@@ -4,6 +4,11 @@ namespace Engrana.Domain.Configuration;
 
 public class StringPropertyState : PropertyState<string>
 {
+    public override Condition? PropertyCondition
+    {
+        get => Condition.Equal;
+    }
+
     private object? GetValue(EntityBase entity, PropertyInfo[] entityProperties)
     {
         object? entityValue = null;
@@ -28,11 +33,14 @@ public class StringPropertyState : PropertyState<string>
     {
         var entityValue = GetValue(entity, entityProperties);
         if (entityValue is not null && PropertyCondition is not null)
-            return Equals(entityValue);
+            return Equals((string)entityValue);
         return false;
     }
 
-    public override bool Equals(string entityValue) => entityValue == Value;
+    public override bool Equals(string entityValue)
+    {
+        return Value.Equals(entityValue.Trim(), StringComparison.InvariantCultureIgnoreCase);
+    }
 
     public override bool TransferState(EntityBase entity, PropertyInfo[] entityProperties)
     {

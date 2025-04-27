@@ -25,7 +25,7 @@ public class Workflow : EntityBase
         using var context = contextFactory.CreateDbContext();
         foreach (var wf_step in WorkflowSteps.OrderBy(e => e.Order))
         {
-            if (wf_step.Step(entity, entityPropertyInfo) is false)
+            if (wf_step.Step(entity, entityPropertyInfo, context) is false)
             {
                 executedSuccessfully = false;
                 break;
@@ -34,7 +34,13 @@ public class Workflow : EntityBase
 
         if (executedSuccessfully)
         {
+            //todo log successful execution
             result = await context.SaveChangesAsync();
+        }
+        else
+        {
+            context.ChangeTracker.Clear();
+            //todo log failed execution
         }
         return result > 0;
     }

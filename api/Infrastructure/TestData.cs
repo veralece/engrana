@@ -14,54 +14,26 @@ public class TestData
                 Id = new Guid("1D6BB7CD-C70B-4189-AD55-F4F3EAD98815"),
                 Name = "Information Technology"
             };
-        OrganizationQueue orgQueue =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Application Development",
-                Organization = org
-            };
+        OrganizationQueue orgQueue = new() { Name = "Application Development", Organization = org };
 
         List<Service> services =
         [
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "VMWare",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Reboot Server",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana Configuration Change",
-                ServiceOwner = org
-            }
+            new() { Name = "Engrana", ServiceOwner = org },
+            new() { Name = "VMWare", ServiceOwner = org },
+            new() { Name = "Reboot Server", ServiceOwner = org },
+            new() { Name = "Engrana Configuration Change", ServiceOwner = org }
         ];
 
         List<ServiceCategory> categories =
         [
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Virtualization Services",
                 ServiceCategoryOwner = org,
                 Services = [services.GetByName("Reboot Server")]
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Engrana Services",
                 ServiceCategoryOwner = org,
                 Services = [services.GetByName("Engrana Configuration Change")]
@@ -72,7 +44,6 @@ public class TestData
         [
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Organizations",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -80,7 +51,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Assets",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -88,7 +58,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Services",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -102,7 +71,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Configuration Items",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -110,7 +78,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Knowledge Articles",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -118,28 +85,15 @@ public class TestData
             },
         ];
 
-        Project project =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana Implementation",
-                ServiceRequests = requests
-            };
+        Project project = new() { Name = "Engrana Implementation", ServiceRequests = requests };
 
-        Portfolio portfolio =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "IT Portfolio",
-                Projects = [project]
-            };
+        Portfolio portfolio = new() { Name = "IT Portfolio", Projects = [project] };
 
         org.Portfolio = portfolio;
 
         Asset asset =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare-Test",
                 AssetTag = "1234567890",
                 Description = "Test Server used for virtualization.",
@@ -147,14 +101,12 @@ public class TestData
                 Location = "Office 420",
                 Manufacturer = new()
                 {
-                    Id = Guid.NewGuid(),
                     Name = "Dell - Information Technology Company",
                     Urls = ["https://www.dell.com/en-us"],
                     Addresses =
                     [
                         new()
                         {
-                            Id = Guid.NewGuid(),
                             Name = "Dell Phoenix",
                             Address = "3151 W Behrend Dr",
                             City = "Phoenix",
@@ -162,22 +114,13 @@ public class TestData
                             ZipCode = "85027"
                         }
                     ],
-                    Contacts =
-                    [
-                        new()
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = "Support",
-                            Phone = "(623) 582-0581"
-                        }
-                    ]
+                    Contacts = [new() { Name = "Support", Phone = "(623) 582-0581" }]
                 }
             };
 
         ConfigurationItem serviceCI =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare",
                 Service = services.GetByName("VMWare"),
                 Version = new(17, 6, 2)
@@ -186,7 +129,6 @@ public class TestData
         ConfigurationItem assetCI =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare-Test",
                 Description = "Windows Server 2025",
                 Asset = asset,
@@ -195,6 +137,66 @@ public class TestData
 
         serviceCI.DownstreamConfigurationItems.Add(assetCI);
         assetCI.UpstreamConfigurationItems.Add(serviceCI);
+
+        Guid workflowId = Guid.NewGuid();
+        ConditionStatement conditionStatement =
+            new()
+            {
+                Name = "Name is eq to IT Applications statement",
+                StringPropertyStateConditions =
+                [
+                    new()
+                    {
+                        Name = "Text_PS:IT Applications",
+                        PropertyName = "Name",
+                        Value = "IT Applications"
+                    }
+                ]
+            };
+
+        Workflow workflow =
+            new()
+            {
+                Id = workflowId,
+                Name = "Change Org Name to Information Technology",
+                WorkflowType = WorkflowType.Triggered,
+                ConditionSteps =
+                [
+                    new()
+                    {
+                        Order = 0,
+                        Name = "Name is eq to IT Applications step",
+                        ConditionStatement = conditionStatement
+                    }
+                ],
+                DataSteps =
+                [
+                    new()
+                    {
+                        Name = "Update Name Step",
+                        Order = 1,
+                        StringPropertyToUpdate =
+                        [
+                            new()
+                            {
+                                Name = "Text_PS:Information Technology",
+                                PropertyName = "Name",
+                                Value = "Information Technology"
+                            }
+                        ],
+                    }
+                ]
+            };
+
+        Trigger trigger =
+            new()
+            {
+                Name = "Check Org Name Changed to IT Applications",
+                WorkflowId = workflowId,
+                TriggerEntity = EntityType.Organization,
+                ActionType = ActionType.OnChanged,
+                ConditionStatement = conditionStatement
+            };
 
         context.Set<Organization>().Add(org);
         context.Set<OrganizationQueue>().Add(orgQueue);
@@ -206,6 +208,8 @@ public class TestData
         context.Set<Service>().AddRange(services);
         context.Set<ConfigurationItem>().Add(assetCI);
         context.Set<ConfigurationItem>().Add(serviceCI);
+        context.Set<Workflow>().Add(workflow);
+        context.Set<Trigger>().Add(trigger);
 
         context.SaveChanges();
     }
@@ -222,54 +226,26 @@ public class TestData
                 Id = new Guid("1D6BB7CD-C70B-4189-AD55-F4F3EAD98815"),
                 Name = "Information Technology"
             };
-        OrganizationQueue orgQueue =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Application Development",
-                Organization = org
-            };
+        OrganizationQueue orgQueue = new() { Name = "Application Development", Organization = org };
 
         List<Service> services =
         [
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "VMWare",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Reboot Server",
-                ServiceOwner = org
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana Configuration Change",
-                ServiceOwner = org
-            }
+            new() { Name = "Engrana", ServiceOwner = org },
+            new() { Name = "VMWare", ServiceOwner = org },
+            new() { Name = "Reboot Server", ServiceOwner = org },
+            new() { Name = "Engrana Configuration Change", ServiceOwner = org }
         ];
 
         List<ServiceCategory> categories =
         [
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Virtualization Services",
                 ServiceCategoryOwner = org,
                 Services = [services.GetByName("Reboot Server")]
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Engrana Services",
                 ServiceCategoryOwner = org,
                 Services = [services.GetByName("Engrana Configuration Change")]
@@ -280,7 +256,6 @@ public class TestData
         [
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Organizations",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -288,7 +263,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Assets",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -296,7 +270,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Services",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -310,7 +283,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Configuration Items",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -318,7 +290,6 @@ public class TestData
             },
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Create Knowledge Articles",
                 Service = services.GetByName("Engrana Configuration Change"),
                 ServiceCategory = categories.GetByName("Engrana Services"),
@@ -326,28 +297,15 @@ public class TestData
             },
         ];
 
-        Project project =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Engrana Implementation",
-                ServiceRequests = requests
-            };
+        Project project = new() { Name = "Engrana Implementation", ServiceRequests = requests };
 
-        Portfolio portfolio =
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "IT Portfolio",
-                Projects = [project]
-            };
+        Portfolio portfolio = new() { Name = "IT Portfolio", Projects = [project] };
 
         org.Portfolio = portfolio;
 
         Asset asset =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare-Test",
                 AssetTag = "1234567890",
                 Description = "Test Server used for virtualization.",
@@ -355,14 +313,12 @@ public class TestData
                 Location = "Office 420",
                 Manufacturer = new()
                 {
-                    Id = Guid.NewGuid(),
                     Name = "Dell - Information Technology Company",
                     Urls = ["https://www.dell.com/en-us"],
                     Addresses =
                     [
                         new()
                         {
-                            Id = Guid.NewGuid(),
                             Name = "Dell Phoenix",
                             Address = "3151 W Behrend Dr",
                             City = "Phoenix",
@@ -370,22 +326,13 @@ public class TestData
                             ZipCode = "85027"
                         }
                     ],
-                    Contacts =
-                    [
-                        new()
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = "Support",
-                            Phone = "(623) 582-0581"
-                        }
-                    ]
+                    Contacts = [new() { Name = "Support", Phone = "(623) 582-0581" }]
                 }
             };
 
         ConfigurationItem serviceCI =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare",
                 Service = services.GetByName("VMWare"),
                 Version = new(17, 6, 2)
@@ -394,7 +341,6 @@ public class TestData
         ConfigurationItem assetCI =
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "VMWare-Test",
                 Description = "Windows Server 2025",
                 Asset = asset,
@@ -403,6 +349,66 @@ public class TestData
 
         serviceCI.DownstreamConfigurationItems.Add(assetCI);
         assetCI.UpstreamConfigurationItems.Add(serviceCI);
+
+        Guid workflowId = Guid.NewGuid();
+        ConditionStatement conditionStatement =
+            new()
+            {
+                Name = "Name is eq to IT Applications statement",
+                StringPropertyStateConditions =
+                [
+                    new()
+                    {
+                        Name = "Text_PS:IT Applications",
+                        PropertyName = "Name",
+                        Value = "IT Applications"
+                    }
+                ]
+            };
+
+        Workflow workflow =
+            new()
+            {
+                Id = workflowId,
+                Name = "Change Org Name to Information Technology",
+                WorkflowType = WorkflowType.Triggered,
+                ConditionSteps =
+                [
+                    new()
+                    {
+                        Order = 0,
+                        Name = "Name is eq to IT Applications step",
+                        ConditionStatement = conditionStatement
+                    }
+                ],
+                DataSteps =
+                [
+                    new()
+                    {
+                        Name = "Update Name Step",
+                        Order = 1,
+                        StringPropertyToUpdate =
+                        [
+                            new()
+                            {
+                                Name = "Text_PS:Information Technology",
+                                PropertyName = "Name",
+                                Value = "Information Technology"
+                            }
+                        ],
+                    }
+                ]
+            };
+
+        Trigger trigger =
+            new()
+            {
+                Name = "Check Org Name Changed to IT Applications",
+                WorkflowId = workflowId,
+                TriggerEntity = EntityType.Organization,
+                ActionType = ActionType.OnChanged,
+                ConditionStatement = conditionStatement
+            };
 
         await context.Set<Organization>().AddAsync(org, cancellationToken);
         await context.Set<OrganizationQueue>().AddAsync(orgQueue, cancellationToken);
@@ -414,6 +420,8 @@ public class TestData
         await context.Set<Service>().AddRangeAsync(services, cancellationToken);
         await context.Set<ConfigurationItem>().AddAsync(assetCI, cancellationToken);
         await context.Set<ConfigurationItem>().AddAsync(serviceCI, cancellationToken);
+        await context.Set<Workflow>().AddAsync(workflow, cancellationToken);
+        await context.Set<Trigger>().AddAsync(trigger, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
 }
