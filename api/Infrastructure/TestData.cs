@@ -1,5 +1,5 @@
 using Engrana.Domain;
-using Engrana.Domain.Configuration;
+using Engrana.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Engrana.Infrastructure.Test;

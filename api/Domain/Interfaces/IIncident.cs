@@ -1,6 +1,7 @@
 namespace Engrana.Domain.Interfaces;
 
-public interface IService : IConfigurable
+public interface IIncident : IConfigurable
 {
+    string Title { get; }
     string? Description { get; }
 }
